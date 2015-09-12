@@ -8,6 +8,24 @@ class GOLTests: XCTestCase {
         [true, true, true],
         [false, true, true]
     ]
+    
+    var state2: [[Bool]] = [
+        [true, true, false],
+        [true, false, true],
+        [false, true, false]
+    ]
+    
+    var state3: [[Bool]] = [
+        [false, true, false],
+        [false, true, false],
+        [false, true, false]
+    ]
+    
+    var state4: [[Bool]] = [
+        [false, false, false],
+        [true, true, true],
+        [false, false, false]
+    ]
 
     override func setUp() {
         super.setUp()
@@ -31,6 +49,22 @@ class GOLTests: XCTestCase {
         ]
         XCTAssertEqual(expected, nextStates)
     }
+    
+    func testStill() {
+        let nextStates: [[Bool]] = nextCellStates(self.state2)
+        let expected: [[Bool]] = [
+            [true, true, false],
+            [true, false, true],
+            [false, true, false]
+        ]
+        XCTAssertEqual(expected, nextStates)
+    }
+    
+    func backAndForth() {
+        XCTAssertEqual(state3, nextCellStates(state4))
+        
+        XCTAssertEqual(state3, nextCellStates(nextCellStates(state3)))
+    }
 }
 
 class LRUCacheTests: XCTestCase {
@@ -52,5 +86,11 @@ class LRUCacheTests: XCTestCase {
         cache.set(4, v: "Swift")
         XCTAssertNil(cache.get(3))
         XCTAssertEqual(cache.get(2)!, "World!")
+    }
+    
+    func testNoCapacity() {
+        let cache = LRUCache<Int, String>(capacity: 0)
+        cache.set(3, v: "Hello")
+        XCTAssertNil(cache.get(3))
     }
 }
